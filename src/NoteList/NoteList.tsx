@@ -2,21 +2,26 @@ import { useMemo, useState } from "react";
 import { Button, Col, Form, Row, Stack } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Select from "react-select";
-import { Tag } from "./App";
-import { NoteCard, SimplifiedNote } from "./NoteCard";
+import { Tag } from "../App";
+import { NoteCard, SimplifiedNote } from "../NoteCard/NoteCard";
 import { EditTagsModal } from "./EditTagsModal";
 
 type NoteListProps = {
-  availableTags: Tag[],
-  notes: SimplifiedNote[],
-  onUpdateTag: (id: string, label: string) => void,
-  onDeleteTag: (id: string) => void,
+  availableTags: Tag[];
+  notes: SimplifiedNote[];
+  onUpdateTag: (id: string, label: string) => void;
+  onDeleteTag: (id: string) => void;
 };
 
-export function NoteList({ availableTags, notes, onUpdateTag, onDeleteTag }: NoteListProps) {
+export function NoteList({
+  availableTags,
+  notes,
+  onUpdateTag,
+  onDeleteTag,
+}: NoteListProps) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState<string>("");
-  const [EditTagsModalIsOpen, setEditTagsModalIsOpen] = useState(false)
+  const [EditTagsModalIsOpen, setEditTagsModalIsOpen] = useState(false);
 
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
@@ -40,9 +45,14 @@ export function NoteList({ availableTags, notes, onUpdateTag, onDeleteTag }: Not
         <Col xs="auto">
           <Stack gap={2} direction="horizontal">
             <Link to={"/new"}>
-              <Button variant="primary">Create</Button>
+              <Button variant="primary">Create Note</Button>
             </Link>
-            <Button onClick={() => setEditTagsModalIsOpen(true)} variant="outline-secondary">Edit Tags</Button>
+            <Button
+              onClick={() => setEditTagsModalIsOpen(true)}
+              variant="outline-secondary"
+            >
+              Edit Tags
+            </Button>
           </Stack>
         </Col>
       </Row>
@@ -60,7 +70,7 @@ export function NoteList({ availableTags, notes, onUpdateTag, onDeleteTag }: Not
           </Col>
           <Col>
             <Form.Group controlId="tags">
-              <Form.Label>Tags</Form.Label> 
+              <Form.Label>Tags</Form.Label>
               <Select
                 value={selectedTags.map((tag) => {
                   return { label: tag.label, value: tag.id }; // converting our tag's "id" to "value" so react select accepts it
@@ -88,7 +98,13 @@ export function NoteList({ availableTags, notes, onUpdateTag, onDeleteTag }: Not
           </Col>
         ))}
       </Row>
-      <EditTagsModal show={EditTagsModalIsOpen} handleClose={() => setEditTagsModalIsOpen(false)} availableTags={availableTags} onUpdateTag={onUpdateTag} onDeleteTag={onDeleteTag}/>
+      <EditTagsModal
+        show={EditTagsModalIsOpen}
+        handleClose={() => setEditTagsModalIsOpen(false)}
+        availableTags={availableTags}
+        onUpdateTag={onUpdateTag}
+        onDeleteTag={onDeleteTag}
+      />
     </>
   );
 }
